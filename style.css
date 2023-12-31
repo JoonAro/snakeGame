@@ -16,6 +16,32 @@ body {
     border: 1px solid black;
 }
 
+.snakeHead {
+    background-color: #00916f;
+    border: 1px solid black;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    transition: 0ms;
+}
+
+.snakeHeadDown {
+    background-color: #00916f;
+    border: 1px solid black;
+    border-radius: 0 0 50% 50%;
+}
+
+.snakeHeadLeft {
+    background-color: #00916f;
+    border: 1px solid black;
+    border-radius: 50% 0 0 50%;
+}
+
+.snakeHeadUp {
+    background-color: #00916f;
+    border: 1px solid black;
+    border-radius: 50% 50% 0 0;
+}
+
 .food {
     background: rgb(199, 19, 19);
     border: 2px solid rgb(212, 165, 108);

@@ -1,4 +1,5 @@
 // https://www.youtube.com/watch?v=uyhzCBEGaBY Based on this tutorial
+//          controls sometimes feel unresponsive. When making quick turns where you return to the original direction it might just cancel your turn. Maybe save the direction to a next move variable and make it so that you can only change the direction once per turn.
 const board = document.getElementById("gameContainer");
 const spaceToStart = document.getElementById("spaceToStart");
 const score = document.getElementById("score");
@@ -13,6 +14,7 @@ let gameInterval;
 let gameSpeedDelay = 200;
 let gameStarted = false;
 let foodInterval;
+let boolean;
 //This draws all the existing elements and checks if snake has collided with them or itself
 const draw = () => {
     board.innerHTML = '';
@@ -21,13 +23,40 @@ const draw = () => {
     drawFood();
     drawBlock();
     updateScore();
+    if (boolean === true) {
+        foodReGenerator();
+    }
 }
 //each snakepart is a div with class snake
 function drawSnake() {
     snake.forEach((part) => {
-        const snakeElement = createGameElement('div', 'snake');
-        setPosition(snakeElement, part)
-        board.appendChild(snakeElement);
+        if (part === snake[0]) {
+            if (newDirection === 'down') {
+                const snakeElement = createGameElement('div', 'snakeHeadDown');
+                setPosition(snakeElement, part)
+                board.appendChild(snakeElement);
+            }
+            else if (newDirection === 'left') {
+                const snakeElement = createGameElement('div', 'snakeHeadLeft');
+                setPosition(snakeElement, part)
+                board.appendChild(snakeElement);
+            }
+            else if (newDirection === 'up') {
+                const snakeElement = createGameElement('div', 'snakeHeadUp');
+                setPosition(snakeElement, part)
+                board.appendChild(snakeElement);
+            }
+            else {
+                const snakeElement = createGameElement('div', 'snakeHead');
+                setPosition(snakeElement, part)
+                board.appendChild(snakeElement);
+            }
+        }
+        else {
+            const snakeElement = createGameElement('div', 'snake');
+            setPosition(snakeElement, part)
+            board.appendChild(snakeElement);
+        }
     });
 }
 function drawFood() {
@@ -73,6 +102,7 @@ function generateFood() {
         food = generateFood();
     }
     else if (posIsOccupied === false) {
+        generateObstacle();
         return { x, y };
     }
     else food = generateFood();
@@ -115,17 +145,14 @@ function move() {
     snake.unshift(head);
     //sometimes food is undefined so this if statement clears it
     if (food !== undefined) {
-        //whenever you eat obstacle and new food is created
+        //whenever you eat: new food is created. When food is succesfully placed on map it then creates a new obstacle(this happens in generateFood func)
         if (head.x === food.x && head.y === food.y) {
-            generateObstacle();
             food = generateFood();
             increaseSpeed();
             clearInterval(gameInterval); //clear past interval
             clearTimeout(foodInterval);
             //if food is not touched in 10 secs it will regenerate somewhere else once
-            foodInterval = setTimeout(() => {
-                food = generateFood();
-            }, 10000);
+            foodReGenerator();
             gameInterval = setInterval(() => {
                 //making sure snake head doesn't turn 180 within an interval
                 if ((direction === 'up' && newDirection === 'down') || (direction === 'down' && newDirection === 'up') || (direction === 'left' && newDirection === 'right') || (direction === 'right' && newDirection === 'left')) {
@@ -146,6 +173,15 @@ function move() {
         }
     }
     else { food = generateFood };
+}
+
+function foodReGenerator() {
+    boolean = false;
+    clearTimeout(foodInterval);
+    foodInterval = setTimeout(() => {
+        food = generateFood();
+        boolean = true;
+    }, 10000);
 }
 function startGame() {
     gameStarted = true;
@@ -202,7 +238,7 @@ function handleKeyDown(event) {
 function increaseSpeed() {
     if (gameSpeedDelay > 150) {
         gameSpeedDelay -= 5;
-    } else if (gameSpeedDelay > 100) {
+    } else if (gameSpeedDelay > 123) {
         gameSpeedDelay -= 3;
     }
 }
@@ -223,6 +259,15 @@ function checkCollision() {
 function updateScore() {
     const currentScore = (snake.length - 1) * 10;
     score.textContent = "Score " + currentScore.toString();
+    if (currentScore === 100) {
+        board.style.background = "turquoise";
+    }
+    else if (currentScore === 200) {
+        board.style.background = "orange";
+    }
+    else if (currentScore === 300) {
+        board.style.background = "pink";
+    }
 }
 function resetGame() {
     stopGame();
