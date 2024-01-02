@@ -275,7 +275,9 @@ function resetGame() {
     food = generateFood();
     obstacle = [{ x: 2, y: 2 }, { x: 19, y: 19 }];
     direction = 'right';
+    newDirection = 'right';
     gameSpeedDelay = 200;
+    board.style.background = "#aa8a23";
 }
 function stopGame() {
     spaceToStart.style.display = 'block';
