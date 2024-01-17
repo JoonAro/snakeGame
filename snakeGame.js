@@ -7,6 +7,7 @@ const gridSize = 20;
 let snake = [{ x: 10, y: 10 }];
 let obstacle = [{ x: 2, y: 2 }, { x: 19, y: 19 }];
 let usedSquares;
+let turns = []
 let food = generateFood();
 let newDirection = 'right';
 let direction;
@@ -15,6 +16,9 @@ let gameSpeedDelay = 200;
 let gameStarted = false;
 let foodInterval;
 let boolean;
+let counter;
+let turn = [];
+
 //This draws all the existing elements and checks if snake has collided with them or itself
 const draw = () => {
     board.innerHTML = '';
@@ -27,38 +31,40 @@ const draw = () => {
         foodReGenerator();
     }
 }
-//each snakepart is a div with class snake
+//each snakepart is a div with class snake apart from
+//the head snake[0]. Turns have extra class to round the right corner so the snake looks less blocky
 function drawSnake() {
-    snake.forEach((part) => {
+    let snakeElement;
+    let turnIndex = -1;
+    //find the parts of snake that have turns in them
+    //turns is an array of turn coordinate objects
+    for (part of snake) {
+        const matchCoordinates = turns.find(turnCoords => turnCoords.x === part.x && turnCoords.y === part.y)
         if (part === snake[0]) {
-            if (newDirection === 'down') {
-                const snakeElement = createGameElement('div', 'snakeHeadDown');
-                setPosition(snakeElement, part)
-                board.appendChild(snakeElement);
-            }
-            else if (newDirection === 'left') {
-                const snakeElement = createGameElement('div', 'snakeHeadLeft');
-                setPosition(snakeElement, part)
-                board.appendChild(snakeElement);
-            }
-            else if (newDirection === 'up') {
-                const snakeElement = createGameElement('div', 'snakeHeadUp');
-                setPosition(snakeElement, part)
-                board.appendChild(snakeElement);
-            }
-            else {
-                const snakeElement = createGameElement('div', 'snakeHead');
-                setPosition(snakeElement, part)
-                board.appendChild(snakeElement);
-            }
-        }
-        else {
-            const snakeElement = createGameElement('div', 'snake');
-            setPosition(snakeElement, part)
+            snakeElement = createGameElement('div', `snakeHead ${newDirection}`);
+            setPosition(snakeElement, part);
             board.appendChild(snakeElement);
         }
-    });
+        //if turns.find finds a match it will go here
+        //turnIndex++ fixes turns to have the right index. original value is -1
+        else if (matchCoordinates) {
+            turnIndex++;
+            snakeElement = createGameElement('div', `snake ${turn[turnIndex]}`);
+            setPosition(snakeElement, turns[turnIndex]);
+            board.appendChild(snakeElement);
+        }
+        else {
+            snakeElement = createGameElement('div', `snake`);
+            setPosition(snakeElement, part);
+            board.appendChild(snakeElement);
+        }
+    }
+    turnIndex = -1;
+    //outside for loop we return original value
 }
+
+//turn array has the direction and new direction combined as a string of two directions. Turns array has the coordinates. They are created from scratch and the indexes match everywhere so we can match the right css class with the right turn
+
 function drawFood() {
     if (food !== undefined) {
         const foodElement = createGameElement('div', 'food');
@@ -155,17 +161,31 @@ function move() {
             foodReGenerator();
             gameInterval = setInterval(() => {
                 //making sure snake head doesn't turn 180 within an interval
-                if ((direction === 'up' && newDirection === 'down') || (direction === 'down' && newDirection === 'up') || (direction === 'left' && newDirection === 'right') || (direction === 'right' && newDirection === 'left')) {
-                    move();
-                    checkCollision();
-                    draw();
+                if ((direction === 'up' && newDirection === 'down') || (direction === 'down' && newDirection === 'up') || (direction === 'left' && newDirection === 'right') || (direction === 'right' && newDirection === 'left') || direction === newDirection) {
+                }
+                else if (direction !== newDirection) {
+                    turn.push(direction + newDirection);
+                    counter = 1;
+                    console.log(turn);
+                    direction = newDirection;
+                    turns.push(snake[0]);
                 }
                 else {
-                    direction = newDirection;
-                    move();
-                    checkCollision();
-                    draw();
+                    console.log(error)
                 }
+                if (turns[0] === snake[(snake.length - 1)]) {
+                    turns.shift();
+                    turn.shift();
+                }
+                if (counter === (snake.length - 1)) {
+                    console.log("delete turns")
+                    turns = [];
+                    turn = [];
+                }
+                move();
+                checkCollision();
+                draw();
+                counter++;
             }, gameSpeedDelay);
 
         } else {
@@ -272,6 +292,8 @@ function updateScore() {
 function resetGame() {
     stopGame();
     snake = [{ x: 10, y: 10 }];
+    turns = [];
+    turn = [];
     food = generateFood();
     obstacle = [{ x: 2, y: 2 }, { x: 19, y: 19 }];
     direction = 'right';

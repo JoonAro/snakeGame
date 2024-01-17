@@ -19,28 +19,65 @@ body {
 .snakeHead {
     background-color: #00916f;
     border: 1px solid black;
-    border-top-right-radius: 50%;
-    border-bottom-right-radius: 50%;
     transition: 0ms;
 }
 
-.snakeHeadDown {
-    background-color: #00916f;
-    border: 1px solid black;
+.right {
+    border-radius: 0 50% 50% 0;
+}
+
+.down {
     border-radius: 0 0 50% 50%;
 }
 
-.snakeHeadLeft {
-    background-color: #00916f;
-    border: 1px solid black;
+.left {
     border-radius: 50% 0 0 50%;
 }
 
-.snakeHeadUp {
-    background-color: #00916f;
-    border: 1px solid black;
+.up {
     border-radius: 50% 50% 0 0;
 }
+
+.upleft {
+    border-radius: 0 50% 0 0;
+    background-color: yellow;
+}
+
+.upright {
+    border-radius: 50% 0 0 0;
+    background-color: yellow;
+}
+
+.rightdown {
+    border-radius: 0 50% 0 0;
+    background-color: yellow;
+}
+
+.rightup {
+    border-radius: 0 0 50% 0;
+    background-color: yellow;
+}
+
+.leftup {
+    border-radius: 0 0 0 50%;
+    background-color: yellow;
+}
+
+.leftdown {
+    border-radius: 50% 0 0 0;
+    background-color: yellow;
+}
+
+.downright {
+    border-radius: 0 0 0 50%;
+    background-color: yellow;
+}
+
+.downleft {
+    border-radius: 0 0 50% 0%;
+    background-color: yellow;
+}
+
 
 .food {
     background: rgb(199, 19, 19);
