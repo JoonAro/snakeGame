@@ -23,6 +23,7 @@ let turn = [];
 const draw = () => {
     board.innerHTML = '';
     drawSnake();
+    /*  drawShadow(); */
     checkCollision();
     drawFood();
     drawBlock();
@@ -62,6 +63,15 @@ function drawSnake() {
     turnIndex = -1;
     //outside for loop we return original value
 }
+
+/* function drawShadow() {
+    let shadowElement;
+    for (part of usedSquares) {
+        shadowElement = createGameElement('div', `shadow`);
+        setPosition(shadowElement, part);
+        board.appendChild(shadowElement);
+    };
+} */
 
 //turn array has the direction and new direction combined as a string of two directions. Turns array has the coordinates. They are created from scratch and the indexes match everywhere so we can match the right css class with the right turn
 
@@ -280,13 +290,13 @@ function updateScore() {
     const currentScore = (snake.length - 1) * 10;
     score.textContent = "Score " + currentScore.toString();
     if (currentScore === 100) {
-        board.style.background = "turquoise";
+        board.style.background = "linear-gradient(to top, blue, turquoise)";
     }
     else if (currentScore === 200) {
-        board.style.background = "orange";
+        board.style.background = "linear-gradient(to top, orange, greenyellow)";
     }
     else if (currentScore === 300) {
-        board.style.background = "pink";
+        board.style.background = "linear-gradient(to top, blueviolet, pink)";
     }
 }
 function resetGame() {
