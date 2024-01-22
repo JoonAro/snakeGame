@@ -16,10 +16,8 @@ body {
 
 
 .snake {
-    background-color: #00730b;
-    border: 2px solid #004d08;
+    background-image: linear-gradient(#00730b, greenyellow, #00730b, #00730b, #004407);
     border-bottom: 5px solid #000000;
-    border-top: 3px solid greenyellow;
     z-index: 2;
 }
 
@@ -32,69 +30,81 @@ body {
     z-index: 1;
 } */
 
-.snakeHead {
-    background-color: #00916f;
-    border: 2px solid #004938;
-    border-bottom: 5px solid #00231b;
-    border-top: 3px solid rgb(132, 197, 35);
-    transition: 0ms;
+.snakeHead,
+.left {
+    border-right: 2px solid #00916f;
+    background-image: linear-gradient(#00730b, greenyellow, #00730b, #00730b, #004407);
+    border-bottom: 5px solid #000000;
+    z-index: 2;
 }
 
 .right {
     border-radius: 0 50% 50% 0;
 }
 
-.down {
+.down,
+.up {
     border-radius: 0 0 50% 50%;
+    background-image: linear-gradient(to right, #00730b, #00730b, greenyellow, #00730b, #00730b);
+    border: 2px solid #004d08;
+    border-top: unset;
+    border-bottom: black 6px solid;
+    z-index: 2;
 }
 
 .left {
     border-radius: 50% 0 0 50%;
+    border-right: unset;
+    border-left: 2px solid #00916f;
 }
 
 .up {
     border-radius: 50% 50% 0 0;
+    border-bottom: unset;
 }
 
-.upleft {
-    border-radius: 0 50% 0 0;
-    background-color: yellow;
-}
-
-.upright {
-    border-radius: 50% 0 0 0;
-    background-color: yellow;
-}
-
+.upleft,
 .rightdown {
     border-radius: 0 50% 0 0;
-    background-color: yellow;
+    /* background-image: linear-gradient(-120deg, rgb(0, 0, 0), rgb(0, 70, 0), green, green, green, greenyellow, rgb(0, 72, 0), black); */
+    background-image: url(topRight.png);
+    border-bottom: unset;
 }
 
-.rightup {
-    border-radius: 0 0 50% 0;
-    background-color: yellow;
-}
-
-.leftup {
-    border-radius: 0 0 0 50%;
-    background-color: yellow;
-}
-
+.upright,
 .leftdown {
     border-radius: 50% 0 0 0;
-    background-color: yellow;
+    border-bottom: unset;
+    background-image: url(topLeft.png);
 }
 
+.rightup,
+.downleft {
+    border-radius: 0 0 50% 0;
+    background-image: url(bottomRight.png);
+}
+
+.leftup,
 .downright {
     border-radius: 0 0 0 50%;
-    background-color: yellow;
+    background-image: url(bottomLeft.png);
 }
 
-.downleft {
-    border-radius: 0 0 50% 0%;
-    background-color: yellow;
+.vertical {
+    background-image: linear-gradient(to right, #00730b, #00730b, greenyellow, #00730b, #00730b);
+    border: 2px solid #004d08;
+    border-top: unset;
+    border-bottom: unset;
+    z-index: 2;
 }
+
+/* .horizontal {
+    background-image: linear-gradient(#00730b, greenyellow, #00730b);
+    border: 2px solid #004d08;
+    border-top: unset;
+    border-bottom: unset;
+    z-index: 2;
+} */
 
 
 .food {

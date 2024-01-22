@@ -18,6 +18,7 @@ let foodInterval;
 let boolean;
 let counter;
 let turn = [];
+let lastPart;
 
 //This draws all the existing elements and checks if snake has collided with them or itself
 const draw = () => {
@@ -54,11 +55,18 @@ function drawSnake() {
             setPosition(snakeElement, turns[turnIndex]);
             board.appendChild(snakeElement);
         }
-        else {
+        else if (part.x === lastPart.x) {
+            snakeElement = createGameElement('div', `snake vertical`);
+            setPosition(snakeElement, part);
+            board.appendChild(snakeElement);
+        }
+        else if (part.y === lastPart.y) {
             snakeElement = createGameElement('div', `snake`);
             setPosition(snakeElement, part);
             board.appendChild(snakeElement);
         }
+
+        lastPart = part;
     }
     turnIndex = -1;
     //outside for loop we return original value
@@ -176,7 +184,7 @@ function move() {
                 else if (direction !== newDirection) {
                     turn.push(direction + newDirection);
                     counter = 1;
-                    console.log(turn);
+                    //console.log(turn);
                     direction = newDirection;
                     turns.push(snake[0]);
                 }
