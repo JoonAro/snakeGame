@@ -112,16 +112,23 @@ function setPosition(element, position) {
     element.style.gridRow = position.y;
 }
 //used squares is equal to snake and obstacle arrays combined
+//if snake head or in this case usedSquares[0].x or y matches with block run again
 function generateFood() {
     usedSquares = [...snake, ...obstacle]
     let posIsOccupied = false;
     const x = Math.floor(Math.random() * gridSize) + 1;
     const y = Math.floor(Math.random() * gridSize) + 1;
-    usedSquares.forEach(pos => {
-        if (pos.x === x && pos.y === y) {
-            posIsOccupied = true;
-        }
-    });
+    if (x === usedSquares[0].x || y === usedSquares[0].y) {
+        posIsOccupied = true;
+    }
+    else {
+        usedSquares.forEach(pos => {
+            if (pos.x === x && pos.y === y) {
+                posIsOccupied = true;
+            }
+        });
+    }
+
     if (posIsOccupied === true) {
         posIsOccupied = false;
         food = generateFood();
