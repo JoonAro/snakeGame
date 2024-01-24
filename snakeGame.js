@@ -1,5 +1,5 @@
 // https://www.youtube.com/watch?v=uyhzCBEGaBY Based on this tutorial
-//          controls sometimes feel unresponsive. When making quick turns where you return to the original direction it might just cancel your turn. Maybe save the direction to a next move variable and make it so that you can only change the direction once per turn.
+//   FIX THIS!       controls sometimes feel unresponsive. When making quick turns where you return to the original direction it might just cancel your turn. Maybe save the direction to a next move variable and make it so that you can only change the direction once per turn.
 const board = document.getElementById("gameContainer");
 const spaceToStart = document.getElementById("spaceToStart");
 const score = document.getElementById("score");
@@ -15,12 +15,13 @@ let gameInterval;
 let gameSpeedDelay = 200;
 let gameStarted = false;
 let foodInterval;
-let boolean;
+let foodBoolean;
 let counter;
 let turn = [];
 let lastPart;
 
 //This draws all the existing elements and checks if snake has collided with them or itself
+//It also runs the updateScore and if food has not been eaten in 10s it will run the foodReGenerator function
 const draw = () => {
     board.innerHTML = '';
     drawSnake();
@@ -29,7 +30,7 @@ const draw = () => {
     drawFood();
     drawBlock();
     updateScore();
-    if (boolean === true) {
+    if (foodBoolean === true) {
         foodReGenerator();
     }
 }
@@ -214,11 +215,11 @@ function move() {
 }
 
 function foodReGenerator() {
-    boolean = false;
+    foodBoolean = false;
     clearTimeout(foodInterval);
     foodInterval = setTimeout(() => {
         food = generateFood();
-        boolean = true;
+        foodBoolean = true;
     }, 10000);
 }
 function startGame() {
@@ -317,7 +318,7 @@ function resetGame() {
     direction = 'right';
     newDirection = 'right';
     gameSpeedDelay = 200;
-    board.style.background = "#aa8a23";
+    board.style.background = "linear-gradient(to top, #4d3f10, #aa8a23)";
 }
 function stopGame() {
     spaceToStart.style.display = 'block';
